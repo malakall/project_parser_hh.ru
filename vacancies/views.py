@@ -6,17 +6,21 @@ from django.core.management import call_command
 
 class VacancyListView(View):
     def get(self, request):
-        filter_type = request.GET.get('filter')
-        filter_value = request.GET.get('value')
+        name_filter = request.GET.get('name')
+        salary_from_filter = request.GET.get('salary_from')
+        salary_to_filter = request.GET.get('salary_to')
+        address_filter = request.GET.get('address')
+
         vacancies = Vacancy.objects.all()
 
-        if filter_type and filter_value:
-            if filter_type == 'name':
-                vacancies = vacancies.filter(name__icontains=filter_value)
-            elif filter_type == 'salary':
-                vacancies = vacancies.filter(salary_from__gte=filter_value)
-            elif filter_type == 'address':
-                vacancies = vacancies.filter(address__icontains=filter_value)
+        if name_filter:
+            vacancies = vacancies.filter(name__icontains=name_filter)
+        if salary_from_filter:
+            vacancies = vacancies.filter(salary_from__gte=salary_from_filter)
+        if salary_to_filter:
+            vacancies = vacancies.filter(salary_to__lte=salary_to_filter)
+        if address_filter:
+            vacancies = vacancies.filter(address__icontains=address_filter)
 
         return render(request, 'vacancies/vacancy_list.html', {'vacancies': vacancies})
 
@@ -31,21 +35,3 @@ class VacancyCountView(View):
     def get(self, request):
         count = Vacancy.objects.count()
         return JsonResponse({'count': count})
-    
-
-
-def count_vacancies(request):
-    filter_type = request.GET.get('filter')
-    filter_value = request.GET.get('value')
-
-    vacancies = Vacancy.objects.all()
-
-    if filter_type == 'name' and filter_value:
-        vacancies = vacancies.filter(name__icontains=filter_value)
-    elif filter_type == 'salary' and filter_value:
-        vacancies = vacancies.filter(salary_from__gte=filter_value)
-    elif filter_type == 'address' and filter_value:
-        vacancies = vacancies.filter(address__icontains=filter_value)
-
-    count = vacancies.count()
-    return JsonResponse({'count': count})

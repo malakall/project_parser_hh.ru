@@ -6,13 +6,18 @@
 <body>
     <h1>Vacancies</h1>
     <form method="get">
-        <label for="filter">Filter by:</label>
-        <select name="filter" id="filter">
-            <option value="name">Name</option>
-            <option value="salary">Salary</option>
-            <option value="address">Address</option>
-        </select>
-        <input type="text" name="value" placeholder="Filter value">
+        <label for="name">Name:</label>
+        <input type="text" name="name" placeholder="Name" id="name"><br>
+
+        <label for="salary_from">Salary From:</label>
+        <input type="number" name="salary_from" placeholder="Salary From" id="salary_from"><br>
+
+        <label for="salary_to">Salary To:</label>
+        <input type="number" name="salary_to" placeholder="Salary To" id="salary_to"><br>
+
+        <label for="address">Address:</label>
+        <input type="text" name="address" placeholder="Address" id="address"><br>
+
         <button type="submit">Apply Filter</button>
     </form>
 
