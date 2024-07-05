@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vacancies</title>
+</head>
+<body>
+    <h1>Vacancies</h1>
+    <form method="get">
+        <label for="filter">Filter by:</label>
+        <select name="filter" id="filter">
+            <option value="name">Name</option>
+            <option value="salary">Salary</option>
+            <option value="address">Address</option>
+        </select>
+        <input type="text" name="value" placeholder="Filter value">
+        <button type="submit">Apply Filter</button>
+    </form>
+
+    <button id="upload">Upload</button>
+
+    <h2>Vacancy Count: <span id="vacancy-count"></span></h2>
+
+    <ul>
+        {% for vacancy in vacancies %}
+            <li>
+                <a href="{{ vacancy.url }}">{{ vacancy.name }}</a><br>
+                Salary: {{ vacancy.salary_from }} - {{ vacancy.salary_to }}<br>
+                Address: {{ vacancy.address }}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <script>
+        document.getElementById('upload').addEventListener('click', function() {
+            fetch('{% url "vacancies:upload" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    filter: document.getElementById('filter').value,
+                    value: document.querySelector('input[name="value"]').value,
+                    pages: 1
+                })
+            }).then(response => response.json()).then(data => {
+                if (data.status === 'Database updated') {
+                    alert('Database updated');
+                }
+            });
+        });
+
+        function updateVacancyCount() {
+            fetch('{% url "vacancies:count" %}')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('vacancy-count').innerText = data.count;
+                });
+        }
+
+        updateVacancyCount();
+    </script>
+</body>
+</html>
