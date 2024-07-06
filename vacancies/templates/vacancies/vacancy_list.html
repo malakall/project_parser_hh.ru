@@ -44,8 +44,6 @@
                     'X-CSRFToken': '{{ csrf_token }}'
                 },
                 body: JSON.stringify({
-                    filter: document.getElementById('filter').value,
-                    value: document.querySelector('input[name="value"]').value,
                     pages: 1
                 })
             }).then(response => response.json()).then(data => {
