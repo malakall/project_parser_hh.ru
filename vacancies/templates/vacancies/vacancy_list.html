@@ -5,6 +5,7 @@
 </head>
 <body>
     <h1>Vacancies</h1>
+    <h2> All Vacancies Count in Database: <span id="vacancy-count"></span></h2>
     <form method="get">
         <label for="name">Name:</label>
         <input type="text" name="name" placeholder="Name" id="name"><br>
@@ -23,7 +24,6 @@
 
     <button id="upload">Upload</button>
 
-    <h2>Vacancy Count: <span id="vacancy-count"></span></h2>
 
     <ul>
         {% for vacancy in vacancies %}
